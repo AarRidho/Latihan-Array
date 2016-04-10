@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <string.h>
+#define MAXMATKUL 8
+
+typedef struct{
+	char kdseksi[5];
+	int sks;
+	char nilaiHuruf[2];
+}Khs;//data nilai semester mahasiswa
+
+typedef struct{//tipe data semester
+	char noreg[11];
+	Khs khs[MAXMATKUL];
+	int jumlahMatkul;
+	float IP;
+}Mahasiswa; //Mahasiswa adalah sebuah tipe struct
+
+
+float BobotHuruf(char *A){
+	if(strcmp(A,"A")==0){//fungsi string compare, apakah var A == "A"
+		return 4;
+	}else if(strcmp(A,"A-")==0){
+		return 3.75;
+	}else if (strcmp(A,"B+")==0){
+		return 3.25;
+	}else if(strcmp(A,"B")==0){
+		return 3;
+	}else if(strcmp(A,"B-")==0){
+		return 2.75;
+	}else if(strcmp(A,"C+")==0){
+		return 2.25;
+	}else if(strcmp(A,"C")==0){
+		return 2;
+	}//else ...
+}
+main(){
+	Mahasiswa Budi;
+	int i,totalSKS=0;
+	float totalNilai=0;
+	
+	strcpy(Budi.noreg,"5235159999");
+	Budi.jumlahMatkul=6;
+	Budi.IP=0.0;
+	
+	strcpy(Budi.khs[0].kdseksi,"1001");
+	Budi.khs[0].sks=3;
+	strcpy(Budi.khs[0].nilaiHuruf,"A-");
+	strcpy(Budi.khs[1].kdseksi,"1002");
+	Budi.khs[1].sks=4;
+	strcpy(Budi.khs[1].nilaiHuruf,"B");
+	strcpy(Budi.khs[2].kdseksi,"1003");
+	Budi.khs[2].sks=3;
+	strcpy(Budi.khs[2].nilaiHuruf,"A");
+	strcpy(Budi.khs[3].kdseksi,"1004");
+	Budi.khs[3].sks=3;
+	strcpy(Budi.khs[3].nilaiHuruf,"B+");
+	strcpy(Budi.khs[4].kdseksi,"1005");
+	Budi.khs[4].sks=2;
+	strcpy(Budi.khs[4].nilaiHuruf,"A");
+	strcpy(Budi.khs[5].kdseksi,"1005");
+	Budi.khs[5].sks=4;
+	strcpy(Budi.khs[5].nilaiHuruf,"C+");
+	
+	for(i=0;i<Budi.jumlahMatkul;i++){
+		totalSKS+=Budi.khs[i].sks;
+		totalNilai+=Budi.khs[i].sks*BobotHuruf(Budi.khs[i].nilaiHuruf);
+	}
+	Budi.IP=totalNilai/totalSKS;
+	printf("IP = %.2f",Budi.IP);
+					
+}
+/* latihan
+1. rancang ADT untuk mengelola data nilai mahasiswa PTIK sampai LULUS 
+2. lengkapi program ini dengan fungsi input, perhitungan dan output
+*/
