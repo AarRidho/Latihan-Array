@@ -1,20 +1,27 @@
 #include <stdio.h>
 #include <string.h>
-#define MAXMATKUL 8
+#define MAXMATKUL 4
+#define MAXMAHASISWA 5
 
 typedef struct{
-	char kdseksi[5];
+	char Kodeseksi[4];
 	int sks;
+}Kds;
+
+typedef struct{
+	char kdseksi[4];
+	int totalsks;
+	int totalnilai;
 	char nilaiHuruf[2];
 }Khs;//data nilai semester mahasiswa
 
 typedef struct{//tipe data semester
 	char noreg[11];
+	char nama[10];
 	Khs khs[MAXMATKUL];
 	int jumlahMatkul;
-	float IP;
+	float IPK;
 }Mahasiswa; //Mahasiswa adalah sebuah tipe struct
-
 
 float BobotHuruf(char *A){
 	if(strcmp(A,"A")==0){//fungsi string compare, apakah var A == "A"
@@ -33,43 +40,100 @@ float BobotHuruf(char *A){
 		return 2;
 	}//else ...
 }
-main(){
-	Mahasiswa Budi;
-	int i,totalSKS=0;
-	float totalNilai=0;
-	
-	strcpy(Budi.noreg,"5235159999");
-	Budi.jumlahMatkul=6;
-	Budi.IP=0.0;
-	
-	strcpy(Budi.khs[0].kdseksi,"1001");
-	Budi.khs[0].sks=3;
-	strcpy(Budi.khs[0].nilaiHuruf,"A-");
-	strcpy(Budi.khs[1].kdseksi,"1002");
-	Budi.khs[1].sks=4;
-	strcpy(Budi.khs[1].nilaiHuruf,"B");
-	strcpy(Budi.khs[2].kdseksi,"1003");
-	Budi.khs[2].sks=3;
-	strcpy(Budi.khs[2].nilaiHuruf,"A");
-	strcpy(Budi.khs[3].kdseksi,"1004");
-	Budi.khs[3].sks=3;
-	strcpy(Budi.khs[3].nilaiHuruf,"B+");
-	strcpy(Budi.khs[4].kdseksi,"1005");
-	Budi.khs[4].sks=2;
-	strcpy(Budi.khs[4].nilaiHuruf,"A");
-	strcpy(Budi.khs[5].kdseksi,"1005");
-	Budi.khs[5].sks=4;
-	strcpy(Budi.khs[5].nilaiHuruf,"C+");
-	
-	for(i=0;i<Budi.jumlahMatkul;i++){
-		totalSKS+=Budi.khs[i].sks;
-		totalNilai+=Budi.khs[i].sks*BobotHuruf(Budi.khs[i].nilaiHuruf);
+
+int mcmKodeSeksi(char *A){
+	if(strcmp(A,"1001")==0){//fungsi string compare, apakah var A == "A"
+		return 3;
+	}else if(strcmp(A,"1002")==0){
+		return 4;
+	}else if(strcmp(A,"1003")==0){
+		return 3;
+	}else if(strcmp(A,"1004")==0){
+		return 3;
+	}else if(strcmp(A,"1005")==0){
+		return 2;
+	}else if(strcmp(A,"1006")==0){
+		return 4;
 	}
-	Budi.IP=totalNilai/totalSKS;
-	printf("IP = %.2f",Budi.IP);
-					
 }
-/* latihan
-1. rancang ADT untuk mengelola data nilai mahasiswa PTIK sampai LULUS 
-2. lengkapi program ini dengan fungsi input, perhitungan dan output
-*/
+
+void showKodeSeksi(Kds *A, int ukuran){
+	int i;
+	strcpy(A[0].Kodeseksi,"1001");
+	A[0].sks=3;
+	strcpy(A[1].Kodeseksi,"1002");
+	A[1].sks=4;
+	strcpy(A[2].Kodeseksi,"1003");
+	A[2].sks=3;
+	strcpy(A[3].Kodeseksi,"1004");
+	A[3].sks=3;
+	strcpy(A[4].Kodeseksi,"1005");
+	A[4].sks=2;
+	strcpy(A[5].Kodeseksi,"1006");
+	A[5].sks=4;
+	printf("Kode Seksi Saat ini: \n");
+	for(i=0;i<ukuran;i++){
+		printf("%d. %.4s (%d)\n",i+1,A[i].Kodeseksi,A[i].sks);
+	}
+	printf("\n");
+}
+
+void isiDataArr(Mahasiswa *A, int ukuran ){
+	int i,j;
+	char temp[20];
+	int jumlahMatkul=MAXMATKUL;
+	for(i=0;i<ukuran;i++){
+		int totalSKS=0;
+		float totalNilai=0;
+		printf("Masukan Nama ke-%d 	: ",i+1);scanf("%[^\n]",A[i].nama);
+		getchar();
+		printf("Masukan Noreg 		: ");scanf("%[^\n]",A[i].noreg);
+		getchar();
+			for(j=0;j<jumlahMatkul;j++){
+				printf("\tMasukan Kode Seksi ke-%d	: ",i+1);scanf("%[^\n]",A[i].khs[i].kdseksi);
+				getchar();
+				totalSKS+=mcmKodeSeksi(A[i].khs[i].kdseksi);
+				printf("\tMasukan Nilai Huruf		: ");scanf("%[^\n]",A[i].khs[i].nilaiHuruf);
+				totalNilai+=mcmKodeSeksi(A[i].khs[i].kdseksi)*BobotHuruf(A[i].khs[i].nilaiHuruf);
+				//printf("Masukan IPK   : ");scanf("%f",&A[i].IPK);
+				getchar();
+		}
+		A[i].khs[i].totalsks=totalSKS;
+		A[i].khs[i].totalnilai=totalNilai;
+		A[i].IPK=totalSKS/totalNilai;
+		printf("\n");
+	}
+}
+
+void bobotNilai(Mahasiswa *A){
+	int i,totalSKS=0;
+	float totalNilai=0;;
+	for(i=0;i<MAXMATKUL;i++){
+		totalSKS+=mcmKodeSeksi(A[i].khs[i].kdseksi);
+		totalNilai+=mcmKodeSeksi(A[i].khs[i].kdseksi)*BobotHuruf(A[i].khs[i].nilaiHuruf);
+	}
+	printf("total SKS	: %d\n",totalSKS);
+	printf("total Nilai	: %.2f",totalNilai);
+}
+
+void showDataArr(Mahasiswa *A, int ukuran){//fungsi mengisi array struct, Pointer A adalah array
+	int i;
+	for(i=0;i<ukuran;i++){	
+		printf("Mahasiswa ke %d\n",i+1);
+		printf("\tNama  	: %s\n",A[i].nama);
+		printf("\tNoreg 	: %s\n",A[i].noreg);//akses ke elemen ke-i A
+		printf("\ttotal SKS : %d\n",A[i].khs[i].totalsks);
+		printf("\tIP		: %.2f\n",A[i].IPK);
+		//printf("\tIPK   : %.2f\n",A[i].IPK);
+	}
+	printf("\n\n");
+}
+
+main(){
+	Kds kds[6];
+	showKodeSeksi(kds,6);
+	Mahasiswa PTIK[MAXMAHASISWA];
+	isiDataArr(PTIK,MAXMAHASISWA);
+	printf("\n");
+	showDataArr(PTIK,MAXMAHASISWA);
+}
