@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#define UKURAN 3
+
+void garis(char kar, int jum);
+void isiData(char *nm[], int ni[]);  
+float rata2(int *nilai);
+int idxNilaiTertinggi(int *nilai);
+void cetakdata(char *nama[], int *nilai);
+
+main(){
+     int i;
+//     char t[20]="";
+     char *nama[UKURAN];
+	 int nilai[UKURAN];
+     printf("Masukan Data\n");        
+     isiData(nama,nilai);
+     //printf("Nilai rata-rata = %.2f",rata2(nilai));
+     cetakdata(nama,nilai);
+}
+void isiData(char *nm[],int *ni){// *ni diberlakukan sebagai array   
+    int i;
+    char tes[20]="";    
+    for(i=1;i<=UKURAN;i++){
+    	printf("Peserta ke - %2d\n",i);
+		printf("  Nama  : ");
+		gets(tes);
+		nm[i-1] = (char*)malloc(sizeof(char)*10);//mengalokasi jumlah elemen nm[i-1] sebanyak 10, malloc=memory alocation
+												// bentuk ini disebut pengalokasian memory secara dinamis
+		strcpy(nm[i-1],tes);
+	    printf("  Nilai : ");scanf(" %d",&ni[i-1]);
+	    getchar();//untuk menghapus pengaruh newline 
+	}
+}
+void garis(char kar, int jum){
+     int i;
+     for(i=1;i<=jum;i++){ //jumlah karakter yang akan ditampilkan dapat disesuaikan
+         printf("%c",kar);
+     }
+     printf("\n");
+}
+ 
+
+float rata2(int *nilai){
+	int i,total=0;
+	for(i=1;i<=UKURAN;i++){
+		total+=nilai[i-1];
+	}
+	return (float)total/UKURAN;
+}
+
+int idxNilaiTertinggi(int *nilai){
+	int i,tempNilai=0,tempNo;// tempNilai menyimpan nilai tertinggi sementara, diinisialilasi dengan 0
+							// tempNol menyimpan indeks nilai tertinggi	
+	for(i=1;i<=UKURAN;i++){
+		if(tempNilai<nilai[i-1]){// jika nilai pada indeks ke i-1 lebih besar dari tempNilai
+			tempNilai=nilai[i-1];// update nilai tertinggi sementara
+			tempNo=i-1;// update indeks nilai tertinggi sementara
+		}
+	}
+	return tempNo;// mengembalikan indeks nilai tertinggi final
+}
+
+void cetakdata(char *nama[],int *nilai){
+	int i,idxHighest;
+	printf("\n");
+	garis('=',60);
+	printf("%4s|%-21s|%5s |%-14s |%5s","No.","Nama","Nilai","Nilai Huruf","Keterangan\n");
+	garis('=',60);
+	for(i=1;i<=UKURAN;i++){
+		printf("%3d.| %-20s| %-4d ",i,nama[i-1],nilai[i-1]);
+		if(nilai[i-1]>=80){
+			printf("%-16s| %3s \n","| A","Lulus");
+		}else if(nilai[i-1]>=70){
+			printf("%-16s| %3s \n","| B","Lulus");
+		}else if(nilai[i-1]>=60){
+			printf("%-16s| %3s \n","| C","Lulus");
+		}else if(nilai[i-1]>=55){
+			printf("%-16s| %3s \n","| D","Tidak Lulus");
+		}else{
+			printf("%-16s| %3s \n","| D","Tidak Lulus");
+		}
+	}
+	garis('=',60);
+	printf("Rata-rata = %.2f\n",rata2(nilai));
+	idxHighest=idxNilaiTertinggi(nilai);
+	printf("Peserta %s, mendapat nilai tertinggi sebesar : %d\n",nama[idxHighest],nilai[idxHighest]);
+	
+}
+/*latihan:
+tambahkan kolom nilai huruf dan kolom kelulusan
+A -> >=80
+B -> >=70
+C -> >=60
+D -> >=55
+E -> <55
+A,B,C= LULUS
+D dan E= TIDAK LULUS
+*/
