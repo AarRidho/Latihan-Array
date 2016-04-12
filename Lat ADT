@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#define MAXMATKUL 4
-#define MAXMAHASISWA 5
+#define MAXMATKUL 3
+#define MAXMAHASISWA 1
 
 typedef struct{
 	char Kodeseksi[4];
@@ -38,7 +38,9 @@ float BobotHuruf(char *A){
 		return 2.25;
 	}else if(strcmp(A,"C")==0){
 		return 2;
-	}//else ...
+	}else{
+		printf("Bobot Nilai tidak ada");
+	}
 }
 
 int mcmKodeSeksi(char *A){
@@ -85,12 +87,12 @@ void isiDataArr(Mahasiswa *A, int ukuran ){
 	for(i=0;i<ukuran;i++){
 		int totalSKS=0;
 		float totalNilai=0;
-		printf("Masukan Nama ke-%d 	: ",i+1);scanf("%[^\n]",A[i].nama);
+		printf("Masukan Nama ke-%d 	: ",i+1);scanf("%s[^\n]",A[i].nama);
 		getchar();
 		printf("Masukan Noreg 		: ");scanf("%[^\n]",A[i].noreg);
 		getchar();
 			for(j=0;j<jumlahMatkul;j++){
-				printf("\tMasukan Kode Seksi ke-%d	: ",i+1);scanf("%[^\n]",A[i].khs[i].kdseksi);
+				printf("\tMasukan Kode Seksi ke-%d	: ",j+1);scanf("%[^\n(A-E/+/-)]",A[i].khs[i].kdseksi);
 				getchar();
 				totalSKS+=mcmKodeSeksi(A[i].khs[i].kdseksi);
 				printf("\tMasukan Nilai Huruf		: ");scanf("%[^\n]",A[i].khs[i].nilaiHuruf);
@@ -100,7 +102,7 @@ void isiDataArr(Mahasiswa *A, int ukuran ){
 		}
 		A[i].khs[i].totalsks=totalSKS;
 		A[i].khs[i].totalnilai=totalNilai;
-		A[i].IPK=totalSKS/totalNilai;
+		A[i].IPK=A[i].khs[i].totalnilai/A[i].khs[i].totalsks;
 		printf("\n");
 	}
 }
@@ -125,11 +127,13 @@ void showDataArr(Mahasiswa *A, int ukuran){//fungsi mengisi array struct, Pointe
 		printf("\ttotal SKS : %d\n",A[i].khs[i].totalsks);
 		printf("\tIP		: %.2f\n",A[i].IPK);
 		//printf("\tIPK   : %.2f\n",A[i].IPK);
+		printf("\n");
 	}
 	printf("\n\n");
 }
 
 main(){
+	int i;
 	Kds kds[6];
 	showKodeSeksi(kds,6);
 	Mahasiswa PTIK[MAXMAHASISWA];
